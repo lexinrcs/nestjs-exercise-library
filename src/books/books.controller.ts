@@ -1,9 +1,16 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
     constructor(private booksService: BooksService) {}
+
+    @Post()
+    createBook(@Body() createBookDto: CreateBookDto) {
+        return this.booksService.createBook(createBookDto);
+    }
 
     @Get()
     getBooks(@Query('author') author: number) {
@@ -17,5 +24,15 @@ export class BooksController {
         } catch (err) {
             throw new NotFoundException('Book not found in the library!');
         }
+    }
+
+    @Put(':id')
+    updateBook(@Param('id', ParseIntPipe) id: number, @Body() updateBookDto: UpdateBookDto) {
+        return this.booksService.updateBook(id, updateBookDto);   
+    }
+
+    @Delete(':id')
+    deleteBook(@Param('id', ParseIntPipe) id: number) {
+        return this.booksService.deleteBook(id);
     }
 }
