@@ -1,8 +1,6 @@
 import { ArrayMinSize, IsArray, IsInt, isNotEmpty, IsNotEmpty, IsNumber, IsString, Max, Min } from "class-validator";
 
 export class CreateBookDto{
-    @IsInt({message: "Book ID must be an integer"})
-    @IsNotEmpty({message: "Book id must not be empty"})
     bookId: number;
 
 

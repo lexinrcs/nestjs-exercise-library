@@ -1,8 +1,6 @@
 import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export class CreateAuthorDto{
-    @IsNotEmpty({message: "Must not be empty"})
-    @IsInt({message: "Author ID must be an integer"})
     authorId: number;
 
     @IsString({message: "Name must be a string"})
