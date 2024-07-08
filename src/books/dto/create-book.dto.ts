@@ -8,13 +8,9 @@ export class CreateBookDto{
     @IsNotEmpty({message: "Must not be empty"})
     title: string;
 
-    @IsString({message: "Author name must be a string"})
-    @IsNotEmpty({message: "Author name must not be empty"})
-    authorName: string;
-
     @IsInt({message: "Author ID must be an integer"})
     @IsNotEmpty({message: "Author ID must not be empty"})
-    authorId: number;
+    authors: number[];
 
     @IsArray({message: "Genre must be an array"})
     @IsNotEmpty({message: "Genre must not be empty"})

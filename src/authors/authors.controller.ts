@@ -20,11 +20,7 @@ export class AuthorsController {
 
     @Get(':id')
     getOneAuthor(@Param('id', ParseIntPipe) id: number) {
-        try {
-            return this.authorsService.getAuthor(id);
-        } catch (err) {
-            throw new NotFoundException('Author not found in the database!');
-        }
+        return this.authorsService.getAuthor(id);
     }
 
     @Put(':id')

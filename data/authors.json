@@ -1,0 +1,50 @@
+[
+    {
+      "authorId": 1,
+      "name": "F. Scott Fitzgerald",
+      "biography": "Francis Scott Key Fitzgerald was an American novelist and short story writer, widely regarded as one of the greatest American writers of the 20th century.",
+      "age": 44,
+      "nationality": "American",
+      "books": [1]
+    },
+    {
+      "authorId": 2,
+      "name": "Harper Lee",
+      "biography": "Nelle Harper Lee was an American novelist best known for her 1960 novel 'To Kill a Mockingbird'.",
+      "age": 89,
+      "nationality": "American",
+      "books": [2]
+    },
+    {
+      "authorId": 3,
+      "name": "George Orwell",
+      "biography": "Eric Arthur Blair, known by his pen name George Orwell, was an English novelist, essayist, journalist and critic.",
+      "age": 46,
+      "nationality": "British",
+      "books": [3, 6]
+    },
+    {
+      "authorId": 4,
+      "name": "J.D. Salinger",
+      "biography": "Jerome David Salinger was an American writer best known for his novel 'The Catcher in the Rye'.",
+      "age": 91,
+      "nationality": "American",
+      "books": [4]
+    },
+    {
+      "authorId": 5,
+      "name": "Aldous Huxley",
+      "biography": "Aldous Leonard Huxley was an English writer and philosopher. He authored nearly fifty books—both novels and non-fiction works.",
+      "age": 69,
+      "nationality": "British",
+      "books": [5]
+    },
+    {
+      "authorId": 6,
+      "name": "Ray Bradbury",
+      "biography": "Ray Douglas Bradbury was an American author and screenwriter. He worked in a variety of genres, including fantasy, science fiction, horror, and mystery fiction.",
+      "age": 91,
+      "nationality": "American",
+      "books": [5, 7]
+    }
+]

@@ -30,16 +30,16 @@ export class BooksService {
      ]
     
      // create a book
-     createBook(createBookDto: CreateBookDto) {
-         const newBook = {
-             ...createBookDto,
-             id: Date.now(),
-         };
+    //  createBook(createBookDto: CreateBookDto) {
+    //      const newBook = {
+    //          ...createBookDto,
+    //          id: Date.now(),
+    //      };
 
-         this.books.push(newBook);
+    //      this.books.push();
 
-         return newBook;
-     }
+    //      return newBook;
+    //  }
 
      // read all books
     getBooks(author?: number) {

@@ -1,0 +1,65 @@
+[
+    {
+      "bookId": 1,
+      "title": "The Great Gatsby",
+      "authors": [1],
+      "genre": ["Classic", "Fiction"],
+      "year": 1925,
+      "publisher": "Scribner",
+      "description": "A novel about the American dream and the roaring twenties."
+    },
+    {
+      "bookId": 2,
+      "title": "To Kill a Mockingbird",
+      "authors": [2],
+      "genre": ["Classic", "Fiction"],
+      "year": 1960,
+      "publisher": "J.B. Lippincott & Co.",
+      "description": "A story of racial injustice and childhood innocence."
+    },
+    {
+      "bookId": 3,
+      "title": "1984",
+      "authors": [3],
+      "genre": ["Dystopian", "Science Fiction"],
+      "year": 1949,
+      "publisher": "Secker & Warburg",
+      "description": "A novel about a dystopian future under a totalitarian regime."
+    },
+    {
+      "bookId": 4,
+      "title": "The Catcher in the Rye",
+      "authors": [4],
+      "genre": ["Classic", "Fiction"],
+      "year": 1951,
+      "publisher": "Little, Brown and Company",
+      "description": "A story about teenage angst and rebellion."
+    },
+    {
+      "bookId": 5,
+      "title": "Brave New World",
+      "authors": [5, 6],
+      "genre": ["Dystopian", "Science Fiction"],
+      "year": 1932,
+      "publisher": "Chatto & Windus",
+      "description": "A novel about a dystopian future society controlled by technology and conditioning."
+    },
+    {
+      "bookId": 6,
+      "title": "Animal Farm",
+      "authors": [3],
+      "genre": ["Political Fiction", "Satire"],
+      "year": 1945,
+      "publisher": "Secker & Warburg",
+      "description": "A satirical allegory of Soviet totalitarianism."
+    },
+    {
+      "bookId": 7,
+      "title": "Fahrenheit 451",
+      "authors": [6],
+      "genre": ["Dystopian", "Science Fiction"],
+      "year": 1953,
+      "publisher": "Ballantine Books",
+      "description": "A novel about a future society where books are banned and 'firemen' burn any that are found."
+    }
+  ]
