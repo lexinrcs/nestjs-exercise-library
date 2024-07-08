@@ -7,10 +7,10 @@ import { UpdateBookDto } from './dto/update-book.dto';
 export class BooksController {
     constructor(private booksService: BooksService) {}
 
-    // @Post()
-    // createBook(@Body(new ValidationPipe()) createBookDto: CreateBookDto) {
-    //     return this.booksService.createBook(createBookDto);
-    // }
+    @Post()
+    createBook(@Body(new ValidationPipe()) createBookDto: CreateBookDto) {
+        return this.booksService.createBook(createBookDto);
+    }
 
     @Get()
     getBooks(@Query('author') author: number) {

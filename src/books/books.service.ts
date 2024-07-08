@@ -1,82 +1,52 @@
-import { Injectable, Param, ParseIntPipe } from '@nestjs/common';
+import { Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { BooksDatabaseService } from './books.database.service';
 
 @Injectable()
 export class BooksService {
-     private books = [
-        {
-            title: 'The Hobbit',
-            authorName: 'JRR Tolkien',
-            authorId: 1,
-            genre: ['Fantasy'],
-            year: 1937,
-            publisher: 'Houghton Mifflin Harcourt',
-            description: 'A tale of adventure and danger',
-            id: 1
-        },
-        {
-            "title": "Harry Potter and the Sorcerer's Stone",
-            "authorName": "JK Rowling",
-            "authorId": 2,
-            "genre": [
-                "Fantasy"
-            ],
-            "year": 1997,
-            "publisher": "Scholastic Corporation",
-            "description": "A young wizard discovers his magical heritage on his eleventh birthday, when he receives a letter of acceptance to Hogwarts School of Witchcraft and Wizardry.",
-            "id": 2
-        }
-     ]
-    
+    constructor(private readonly booksDatabaseService: BooksDatabaseService) {
+        this.booksDatabaseService = booksDatabaseService;
+    }
+
      // create a book
-    //  createBook(createBookDto: CreateBookDto) {
-    //      const newBook = {
-    //          ...createBookDto,
-    //          id: Date.now(),
-    //      };
+     createBook(createBookDto: CreateBookDto) {
+         const newBook = {
+             ...createBookDto,
+             id: Date.now(),
+         };
+        
+         return this.booksDatabaseService.createBook(newBook);
 
-    //      this.books.push();
-
-    //      return newBook;
-    //  }
+     }
 
      // read all books
     getBooks(author?: number) {
         if(author) {
-            return this.books.filter((book) => book.authorId === author);
+            return this.booksDatabaseService.getBooks(author);
         }
 
-        return this.books
+        return this.booksDatabaseService.getBooks();
     }
 
-    // read a book by ID
+    // // read a book by ID
     getBook(id: number) {
-        const book = this.books.find((book) => book.id === id);
-
-        if(!book) {
-            throw new Error('Book not found in the library!');
+        try {
+            return this.booksDatabaseService.getBook(id);
+        } catch(err) {
+            throw new NotFoundException('Book not found in the library!');
         }
-
-        return book;
     }
 
     updateBook(id: number, updateBookDto: UpdateBookDto) {
-        this.books = this.books.map((book) => {
-            if (book.id === id) {
-                return {...book, ...updateBookDto};
-            }
-            return book;
-        });
-
-        return {message: "Book successfully updated!", updatedBook: this.getBook(id)};
+        return this.booksDatabaseService.updateBook(id, updateBookDto);
     }
 
-    deleteBook(id: number) {
-        const removedBook = this.getBook(id);
-        
-        this.books = this.books.filter((book) => book.id !== id);
-
-        return ({message: "Book successfully removed!", removedBook});
+    deleteBook(id: number) {        
+        try {
+            return this.booksDatabaseService.deleteBook(id);
+        } catch (err) {
+            throw new NotFoundException('Book to be deleted not found in the library!');
+        }
     }
 }
