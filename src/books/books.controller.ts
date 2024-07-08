@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, 
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { BookAuthorDto } from './dto/book-author.dto';
 
 @Controller('books')
 export class BooksController {
@@ -10,6 +11,14 @@ export class BooksController {
     @Post()
     createBook(@Body(new ValidationPipe()) createBookDto: CreateBookDto) {
         return this.booksService.createBook(createBookDto);
+    }
+
+    @Post(':id/authors')
+    async addAuthorToBook(
+      @Param('id', ParseIntPipe) bookId: number,
+      @Body(new ValidationPipe()) addAuthorToBookDto: BookAuthorDto
+    ) {
+      return this.booksService.addAuthorToBook(bookId, addAuthorToBookDto.authorId);
     }
 
     @Get()
@@ -34,5 +43,13 @@ export class BooksController {
     @Delete(':id')
     deleteBook(@Param('id', ParseIntPipe) id: number) {
         return this.booksService.deleteBook(id);
+    }
+
+    @Delete(':id/authors')
+    async removeAuthorFromBook(
+      @Param('id', ParseIntPipe) bookId: number,
+      @Body(new ValidationPipe()) removeAuthorFromBookDto: BookAuthorDto
+    ) {
+      return this.booksService.removeAuthorFromBook(bookId, removeAuthorFromBookDto.authorId);
     }
 }

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorsDatabaseService } from './authors.database.service';
-import { ParseIntPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/http-exception.filters';
 @Injectable()
 export class AuthorsService {
     constructor(private readonly authorsDatabaseService: AuthorsDatabaseService) {

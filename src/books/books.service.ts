@@ -49,4 +49,20 @@ export class BooksService {
             throw new NotFoundException('Book to be deleted not found in the library!');
         }
     }
+
+    async addAuthorToBook(bookId: number, authorId: number): Promise<CreateBookDto> {
+        try{
+            return this.booksDatabaseService.addAuthorToBook(bookId, authorId);
+        } catch(err) {
+            throw new Error('Failed to add author to book. Book or author does not exist.');
+        }
+    }
+
+    async removeAuthorFromBook(bookId: number, authorId: number): Promise<CreateBookDto> {
+       try {
+        return this.booksDatabaseService.removeAuthorFromBook(bookId, authorId);
+       } catch (err) {
+        throw new Error('Failed to remove author from book. Book does not exist.');
+       }
+    }
 }
