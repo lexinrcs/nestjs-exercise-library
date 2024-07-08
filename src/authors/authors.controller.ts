@@ -3,6 +3,7 @@ import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { get } from 'http';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { AuthorBookDto } from './dto/author-book.dto';
 
 @Controller('authors')
 export class AuthorsController {
@@ -11,6 +12,12 @@ export class AuthorsController {
     @Post()
     createAuthor(@Body(new ValidationPipe()) createAuthorDto: CreateAuthorDto) {
         return this.authorsService.createAuthor(createAuthorDto);
+    }
+
+    @Post(':id/books')
+    async addBookToAuthor(@Param('id', ParseIntPipe) id: number, 
+    @Body(new ValidationPipe()) addBookToAuthorDto: AuthorBookDto) {
+        return this.authorsService.addBookToAuthor(id, addBookToAuthorDto.bookId);
     }
 
     @Get()
@@ -32,4 +39,10 @@ export class AuthorsController {
     deleteAuthor(@Param('id', ParseIntPipe) id: number) {
         return this.authorsService.deleteAuthor(id);
     }
+
+    @Delete(':id/books')
+    async removeBookFromAuthor(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) removeBookFromAuthorDto: AuthorBookDto) {
+        return this.authorsService.removeBookFromAuthor(id, removeBookFromAuthorDto.bookId);
+    }
+
 }

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/comm
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksDatabaseService } from './books.database.service';
+import { CreateAuthorDto } from 'src/authors/dto/create-author.dto';
 
 @Injectable()
 export class BooksService {
@@ -50,7 +51,7 @@ export class BooksService {
         }
     }
 
-    async addAuthorToBook(bookId: number, authorId: number): Promise<CreateBookDto> {
+    async addAuthorToBook(bookId: number, authorId: number): Promise<{updatedBook:CreateBookDto, updatedAuthor:CreateAuthorDto}>  {
         try{
             return this.booksDatabaseService.addAuthorToBook(bookId, authorId);
         } catch(err) {
@@ -58,7 +59,7 @@ export class BooksService {
         }
     }
 
-    async removeAuthorFromBook(bookId: number, authorId: number): Promise<CreateBookDto> {
+    async removeAuthorFromBook(bookId: number, authorId: number): Promise<{updatedBook:CreateBookDto, updatedAuthor:CreateAuthorDto}>  {
        try {
         return this.booksDatabaseService.removeAuthorFromBook(bookId, authorId);
        } catch (err) {
