@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, NotFoundException } from "@nestjs/common"
+import { ArgumentsHost, Catch, ExceptionFilter, NotFoundException } from "@nestjs/common"
 
 
 @Catch(NotFoundException)

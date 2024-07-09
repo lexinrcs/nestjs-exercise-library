@@ -2,8 +2,6 @@ import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/commo
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorsDatabaseService } from './authors.database.service';
-import { HttpExceptionFilter } from 'src/http-exception.filters';
-import { CreateBookDto } from 'src/books/dto/create-book.dto';
 import { BooksService } from 'src/books/books.service';
 @Injectable()
 export class AuthorsService {

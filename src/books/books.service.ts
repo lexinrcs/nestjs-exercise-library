@@ -39,7 +39,7 @@ export class BooksService {
         try {
             return this.booksDatabaseService.getBook(id);
         } catch(err) {
-            throw new NotFoundException('Book not found in the library!');
+            throw new NotFoundException();
         }
     }
 
@@ -51,7 +51,7 @@ export class BooksService {
         try {
             return this.booksDatabaseService.deleteBook(id);
         } catch (err) {
-            throw new NotFoundException('Book to be deleted not found in the library!');
+            throw new NotFoundException();
         }
     }
 

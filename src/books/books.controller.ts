@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query, UseFilters, ValidationPipe } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BookAuthorDto } from './dto/book-author.dto';
+import { BookNotFound } from 'src/filters/book-notfound.exception';
 
 @Controller('books')
+@UseFilters(new BookNotFound())
 export class BooksController {
     constructor(private booksService: BooksService) {}
 

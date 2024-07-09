@@ -36,7 +36,7 @@ export class BooksDatabaseService {
     const book = this.books.find(book => book.bookId === id);
     
     if(!book){
-      throw new NotFoundException(`Book with id ${id} not found`);
+      throw new NotFoundException();
     }
 
     return book;
