@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, UseFilters, ValidationPipe } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorBookDto } from './dto/author-book.dto';
+import { AuthorNotFound } from 'src/filters/author-notfound.exception';
 
 @Controller('authors')
+@UseFilters(new AuthorNotFound())
 export class AuthorsController {
     constructor(private authorsService: AuthorsService) {}
 
@@ -43,5 +45,4 @@ export class AuthorsController {
     removeBookFromAuthor(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) removeBookFromAuthorDto: AuthorBookDto) {
         return this.authorsService.removeBookFromAuthor(id, removeBookFromAuthorDto.bookId);
     }
-
 }

@@ -32,7 +32,7 @@ export class AuthorsDatabaseService {
     const author = this.authors.find(author => author.authorId === id);
     
     if(!author) {
-      throw new NotFoundException(`Author with id ${id} not found`);
+      throw new Error();
     }
 
     return author;

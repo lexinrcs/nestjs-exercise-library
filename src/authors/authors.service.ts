@@ -31,7 +31,7 @@ export class AuthorsService {
         try {
             return this.authorsDatabaseService.getAuthor(id);
         } catch (err) {
-            throw new NotFoundException('Author not found in the database!');
+            throw new NotFoundException();
         }
     }
 
@@ -43,7 +43,7 @@ export class AuthorsService {
         try{
             return this.authorsDatabaseService.deleteAuthor(id);
         } catch (err) {
-            throw new NotFoundException('Author to be deleted is not found in the database!');
+            throw new NotFoundException();
         }
     }
 
