@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, ValidationPipe } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { get } from 'http';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorBookDto } from './dto/author-book.dto';
 
@@ -15,7 +14,7 @@ export class AuthorsController {
     }
 
     @Post(':id/books')
-    async addBookToAuthor(@Param('id', ParseIntPipe) id: number, 
+    addBookToAuthor(@Param('id', ParseIntPipe) id: number, 
     @Body(new ValidationPipe()) addBookToAuthorDto: AuthorBookDto) {
         return this.authorsService.addBookToAuthor(id, addBookToAuthorDto.bookId);
     }
@@ -41,7 +40,7 @@ export class AuthorsController {
     }
 
     @Delete(':id/books')
-    async removeBookFromAuthor(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) removeBookFromAuthorDto: AuthorBookDto) {
+    removeBookFromAuthor(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) removeBookFromAuthorDto: AuthorBookDto) {
         return this.authorsService.removeBookFromAuthor(id, removeBookFromAuthorDto.bookId);
     }
 

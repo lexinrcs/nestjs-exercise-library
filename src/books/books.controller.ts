@@ -14,7 +14,7 @@ export class BooksController {
     }
 
     @Post(':id/authors')
-    async addAuthorToBook(
+    addAuthorToBook(
       @Param('id', ParseIntPipe) bookId: number,
       @Body(new ValidationPipe()) addAuthorToBookDto: BookAuthorDto
     ) {
@@ -46,7 +46,7 @@ export class BooksController {
     }
 
     @Delete(':id/authors')
-    async removeAuthorFromBook(
+    removeAuthorFromBook(
       @Param('id', ParseIntPipe) bookId: number,
       @Body(new ValidationPipe()) removeAuthorFromBookDto: BookAuthorDto
     ) {

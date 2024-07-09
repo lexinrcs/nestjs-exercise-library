@@ -1,77 +1,74 @@
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateAuthorDto } from "./dto/create-author.dto";
 import { UpdateAuthorDto } from "./dto/update-author.dto";
 import { BooksService } from "src/books/books.service";
-import { CreateBookDto } from "src/books/dto/create-book.dto";
-import { SharedDataService } from "src/shared/shared-data.service";
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class AuthorsDatabaseService {
-  constructor(
-    private readonly sharedDataService: SharedDataService,
-    @Inject(forwardRef(() => BooksService)) private readonly booksService: BooksService,
-  ) {}
+  private authors: CreateAuthorDto[];
+
+  constructor() {
+    this.loadAuthors();
+  }
+
+  private loadAuthors() {
+    const authorsFP = path.join(process.cwd(), 'data', 'authors.json');
+    this.authors = JSON.parse(fs.readFileSync(authorsFP, 'utf8'));
+    console.log('Initial authors:', this.authors);
+  }
 
   createAuthor(newAuthor: CreateAuthorDto): CreateAuthorDto {
-    const authors = this.sharedDataService.getAuthors();
-    authors.push(newAuthor);
-    this.sharedDataService.updateAuthors(authors);
+    this.authors.push(newAuthor);
     return newAuthor;
   }
 
   getAuthors(): CreateAuthorDto[] {
-    return this.sharedDataService.getAuthors();
+    return this.authors;
   }
 
   getAuthor(id: number): CreateAuthorDto {
-    const authors = this.sharedDataService.getAuthors();
-    return authors.find(author => author.authorId === id);
+    const author = this.authors.find(author => author.authorId === id);
+    
+    if(!author) {
+      throw new NotFoundException(`Author with id ${id} not found`);
+    }
+
+    return author;
   }
 
-  updateAuthor(id: number, updateAuthorDto: UpdateAuthorDto): CreateAuthorDto {
-    const authors = this.sharedDataService.getAuthors();
-    const updatedAuthors = authors.map(author => (author.authorId === id ? { ...author, ...updateAuthorDto } : author));
-    this.sharedDataService.updateAuthors(updatedAuthors);
+  updateAuthor(id: number, updateAuthorDto: UpdateAuthorDto): UpdateAuthorDto {
+    this.authors = this.authors.map(author => {
+      if(author.authorId === id) {
+        return { ...author, ...updateAuthorDto };
+      }
+      return author;
+    })
+
     return this.getAuthor(id);
   }
 
   deleteAuthor(id: number): CreateAuthorDto {
-    const authors = this.sharedDataService.getAuthors();
-    const removedAuthor = this.getAuthor(id);
-    const updatedAuthors = authors.filter(author => author.authorId !== id);
-    this.sharedDataService.updateAuthors(updatedAuthors);
-    return removedAuthor;
+    const toBeRemoved = this.getAuthor(id);
+    this.authors = this.authors.filter(author => author.authorId !== id);
+    
+    return toBeRemoved;
   }
 
-  async addBookToAuthor(authorId: number, bookId: number): Promise<{ updatedBook: CreateBookDto; updatedAuthor: CreateAuthorDto }> {
-    let book = this.booksService.getBook(bookId);
-    let author = this.getAuthor(authorId);
+  addBookToAuthor(authorId: number, bookId: number) {
+    const author = this.getAuthor(authorId);
 
-    if (!author.books.includes(bookId) && !book.authors.includes(authorId)) {
-      author.books.push(bookId);
-      book.authors.push(authorId);
-    }
-
-    book = this.booksService.updateBook(bookId, book);
-    author = this.updateAuthor(authorId, author);
-
-    return { updatedBook: book, updatedAuthor: author };
+    author.books.push(bookId);
+    
+    return this.updateAuthor(authorId, author);
   }
 
-  async removeBookFromAuthor(authorId: number, bookId: number): Promise<{ updatedBook: CreateBookDto; updatedAuthor: CreateAuthorDto }> {
-    let book = this.booksService.getBook(bookId);
-    let author = this.getAuthor(authorId);
+  removeBookFromAuthor(authorId: number, bookId: number) {
+    const author = this.getAuthor(authorId);
 
-    if (author.books.includes(bookId)) {
-      author.books = author.books.filter(b => b !== bookId);
-      if (book.authors.includes(authorId)) {
-        book.authors = book.authors.filter(a => a !== authorId);
-      }
-    }
+    author.books = author.books.filter(book => book !== bookId);
 
-    book = this.booksService.updateBook(bookId, book);
-    author = this.updateAuthor(authorId, author);
-
-    return { updatedBook: book, updatedAuthor: author };
+    return this.updateAuthor(authorId, author);
   }
 }

@@ -1,12 +1,16 @@
-import { Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksDatabaseService } from './books.database.service';
 import { CreateAuthorDto } from 'src/authors/dto/create-author.dto';
+import { AuthorsService } from 'src/authors/authors.service';
 
 @Injectable()
 export class BooksService {
-    constructor(private readonly booksDatabaseService: BooksDatabaseService) {
+    constructor(
+        private readonly booksDatabaseService: BooksDatabaseService,
+        @Inject(forwardRef(() => AuthorsService)) private readonly authorsService: AuthorsService
+    ) {
         this.booksDatabaseService = booksDatabaseService;
     }
 
@@ -51,17 +55,38 @@ export class BooksService {
         }
     }
 
-    async addAuthorToBook(bookId: number, authorId: number): Promise<{updatedBook:CreateBookDto, updatedAuthor:CreateAuthorDto}>  {
+   addAuthorToBook(bookId: number, authorId: number){
         try{
-            return this.booksDatabaseService.addAuthorToBook(bookId, authorId);
+            const book = this.getBook(bookId);
+            const author = this.authorsService.getAuthor(authorId);
+
+            if(!book.authors.includes(authorId)){
+                this.booksDatabaseService.addAuthorToBook(bookId, authorId);
+            }
+
+            if(!author.books.includes(bookId)){
+                this.authorsService.addBookToAuthor(authorId, bookId);
+            }
+            return this.getBook(bookId);
         } catch(err) {
             throw new Error('Failed to add author to book. Book or author does not exist.');
         }
     }
 
-    async removeAuthorFromBook(bookId: number, authorId: number): Promise<{updatedBook:CreateBookDto, updatedAuthor:CreateAuthorDto}>  {
+    removeAuthorFromBook(bookId: number, authorId: number){
        try {
-        return this.booksDatabaseService.removeAuthorFromBook(bookId, authorId);
+        const book = this.getBook(bookId);
+        const author = this.authorsService.getAuthor(authorId);
+
+        if(book.authors.includes(authorId)){
+            this.booksDatabaseService.removeAuthorFromBook(bookId, authorId);
+        }
+
+        if(author.books.includes(bookId)){
+            this.authorsService.removeBookFromAuthor(authorId, bookId);
+        }
+
+        return this.getBook(bookId);
        } catch (err) {
         throw new Error('Failed to remove author from book. Book does not exist.');
        }
