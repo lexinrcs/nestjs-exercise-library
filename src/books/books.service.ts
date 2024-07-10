@@ -37,9 +37,15 @@ export class BooksService {
     // // read a book by ID
     getBook(id: number) {
         try {
-            return this.booksDatabaseService.getBook(id);
+            const book = this.booksDatabaseService.getBook(id);
+
+            if(!book) {
+                throw new NotFoundException();
+            }
+
+            return book;
         } catch(err) {
-            throw new NotFoundException();
+            throw new Error('Cannot find book.');
         }
     }
 
@@ -49,9 +55,15 @@ export class BooksService {
 
     deleteBook(id: number) {        
         try {
-            return this.booksDatabaseService.deleteBook(id);
+            const book= this.booksDatabaseService.deleteBook(id);
+
+            if(!book) {
+                throw new NotFoundException();
+            }
+
+            return book;
         } catch (err) {
-            throw new NotFoundException();
+            throw new Error('Cannot delete book.');
         }
     }
 
@@ -69,7 +81,7 @@ export class BooksService {
             }
             return this.getBook(bookId);
         } catch(err) {
-            throw new Error('Failed to add author to book. Book or author does not exist.');
+            throw new Error('Failed to add author to book.');
         }
     }
 
@@ -88,7 +100,7 @@ export class BooksService {
 
         return this.getBook(bookId);
        } catch (err) {
-        throw new Error('Failed to remove author from book. Book does not exist.');
+        throw new Error('Failed to remove author from book.');
        }
     }
 }

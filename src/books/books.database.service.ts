@@ -35,10 +35,6 @@ export class BooksDatabaseService {
   getBook(id: number): CreateBookDto {
     const book = this.books.find(book => book.bookId === id);
     
-    if(!book){
-      throw new NotFoundException();
-    }
-
     return book;
   }
 

@@ -27,9 +27,14 @@ export class AuthorsService {
 
     getAuthor(id: number) {
         try {
-            return this.authorsDatabaseService.getAuthor(id);
+            const author = this.authorsDatabaseService.getAuthor(id);
+            if(!author) {
+                throw new NotFoundException();
+            }
+
+            return author;
         } catch (err) {
-            throw new NotFoundException();
+            throw new Error('Cannot get author.');
         }
     }
 
@@ -39,9 +44,14 @@ export class AuthorsService {
 
     deleteAuthor(id: number) {
         try{
-            return this.authorsDatabaseService.deleteAuthor(id);
+            const author =  this.authorsDatabaseService.deleteAuthor(id);
+            if(!author) {
+                throw new NotFoundException();
+            }
+
+            return author;
         } catch (err) {
-            throw new NotFoundException();
+            throw new Error('Cannot delete author.');
         }
     }
 

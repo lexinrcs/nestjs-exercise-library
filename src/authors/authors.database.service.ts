@@ -30,10 +30,6 @@ export class AuthorsDatabaseService {
 
   getAuthor(id: number): CreateAuthorDto {
     const author = this.authors.find(author => author.authorId === id);
-    
-    if(!author) {
-      throw new Error();
-    }
 
     return author;
   }
