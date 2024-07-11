@@ -6,7 +6,7 @@ import { AuthorBookDto } from './dto/author-book.dto';
 import { AuthorNotFound } from 'src/filters/author-notfound.exception';
 
 @Controller('authors')
-@UseFilters(new AuthorNotFound())
+// @UseFilters(new AuthorNotFound())
 export class AuthorsController {
     constructor(private authorsService: AuthorsService) {}
 

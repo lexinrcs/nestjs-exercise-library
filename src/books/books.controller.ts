@@ -6,7 +6,7 @@ import { BookAuthorDto } from './dto/book-author.dto';
 import { BookNotFound } from 'src/filters/book-notfound.exception';
 
 @Controller('books')
-@UseFilters(new BookNotFound())
+// @UseFilters(new BookNotFound())
 export class BooksController {
     constructor(private booksService: BooksService) {}
 
@@ -30,11 +30,7 @@ export class BooksController {
 
     @Get(':id')
     getOneBook(@Param('id', ParseIntPipe) id: number) {
-        try {
-            return this.booksService.getBook(id);
-        } catch (err) {
-            throw new NotFoundException('Book not found in the library!');
-        }
+      return this.booksService.getBook(id);
     }
 
     @Put(':id')

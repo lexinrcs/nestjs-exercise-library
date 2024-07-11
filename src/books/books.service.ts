@@ -1,9 +1,9 @@
-import { forwardRef, Inject, Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException, Param, ParseIntPipe, UseFilters } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksDatabaseService } from './books.database.service';
-import { CreateAuthorDto } from 'src/authors/dto/create-author.dto';
 import { AuthorsService } from 'src/authors/authors.service';
+import { BookNotFound } from 'src/filters/book-notfound.exception';
 
 @Injectable()
 export class BooksService {
@@ -18,7 +18,7 @@ export class BooksService {
      createBook(createBookDto: CreateBookDto) {
          const newBook = {
              ...createBookDto,
-             id: Date.now(),
+             bookId: Date.now(),
          };
         
          return this.booksDatabaseService.createBook(newBook);
@@ -36,17 +36,13 @@ export class BooksService {
 
     // // read a book by ID
     getBook(id: number) {
-        try {
-            const book = this.booksDatabaseService.getBook(id);
+        const book = this.booksDatabaseService.getBook(id);
 
-            if(!book) {
-                throw new NotFoundException();
-            }
-
-            return book;
-        } catch(err) {
-            throw new Error('Cannot find book.');
+        if(!book) {
+            throw new NotFoundException(`Book with ID ${id} not found`);
         }
+
+        return book;
     }
 
     updateBook(id: number, updateBookDto: UpdateBookDto) {
@@ -54,39 +50,30 @@ export class BooksService {
     }
 
     deleteBook(id: number) {        
-        try {
-            const book= this.booksDatabaseService.deleteBook(id);
+        const book= this.booksDatabaseService.deleteBook(id);
 
-            if(!book) {
-                throw new NotFoundException();
-            }
-
-            return book;
-        } catch (err) {
-            throw new Error('Cannot delete book.');
+        if(!book) {
+            throw new NotFoundException(`Book with ID ${id} not found`);
         }
+
+        return book;
     }
 
    addAuthorToBook(bookId: number, authorId: number){
-        try{
-            const book = this.getBook(bookId);
-            const author = this.authorsService.getAuthor(authorId);
+        const book = this.getBook(bookId);
+        const author = this.authorsService.getAuthor(authorId);
 
-            if(!book.authors.includes(authorId)){
-                this.booksDatabaseService.addAuthorToBook(bookId, authorId);
-            }
-
-            if(!author.books.includes(bookId)){
-                this.authorsService.addBookToAuthor(authorId, bookId);
-            }
-            return this.getBook(bookId);
-        } catch(err) {
-            throw new Error('Failed to add author to book.');
+        if(!book.authors.includes(authorId)){
+            this.booksDatabaseService.addAuthorToBook(bookId, authorId);
         }
+
+        if(!author.books.includes(bookId)){
+            this.authorsService.addBookToAuthor(authorId, bookId);
+        }
+        return this.getBook(bookId);
     }
 
     removeAuthorFromBook(bookId: number, authorId: number){
-       try {
         const book = this.getBook(bookId);
         const author = this.authorsService.getAuthor(authorId);
 
@@ -99,8 +86,5 @@ export class BooksService {
         }
 
         return this.getBook(bookId);
-       } catch (err) {
-        throw new Error('Failed to remove author from book.');
-       }
     }
 }

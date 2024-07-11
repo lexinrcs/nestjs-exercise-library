@@ -53,18 +53,26 @@ export class AuthorsDatabaseService {
   }
 
   addBookToAuthor(authorId: number, bookId: number) {
-    const author = this.getAuthor(authorId);
+    const authorIndex = this.authors.findIndex(author => author.authorId === authorId);
 
-    author.books.push(bookId);
+    if (authorIndex === -1) {
+        throw new NotFoundException();
+    }
+
+    this.authors[authorIndex].books.push(bookId);
     
-    return this.updateAuthor(authorId, author);
+    return this.updateAuthor(authorId, this.authors[authorIndex]);
   }
 
   removeBookFromAuthor(authorId: number, bookId: number) {
-    const author = this.getAuthor(authorId);
+    const authorIndex = this.authors.findIndex(author => author.authorId === authorId);
 
-    author.books = author.books.filter(book => book !== bookId);
+    if (authorIndex === -1) {
+        throw new NotFoundException();
+    }
 
-    return this.updateAuthor(authorId, author);
+    this.authors[authorIndex].books = this.authors[authorIndex].books.filter(book => book !== bookId);
+
+    return this.updateAuthor(authorId, this.authors[authorIndex]);
   }
 }

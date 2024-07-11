@@ -1,7 +1,6 @@
 import { Injectable, Inject, forwardRef, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { CreateAuthorDto } from 'src/authors/dto/create-author.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -55,17 +54,23 @@ export class BooksDatabaseService {
     return toBeRemoved;
   }
 
-  addAuthorToBook(bookId: number, authorId: number){
-    const book = this.getBook(bookId);
-    book.authors.push(authorId);
-
-    return this.updateBook(bookId, book);
+  addAuthorToBook(bookId: number, authorId: number) {
+    const bookIndex = this.books.findIndex(book => book.bookId === bookId);
+    if (bookIndex === -1) {
+      throw new NotFoundException(`Book with ID ${bookId} not found`);
+    }
+    this.books[bookIndex].authors.push(authorId);
+  
+    return this.books[bookIndex];
   }
-
-  removeAuthorFromBook(bookId: number, authorId: number){
-    const book = this.getBook(bookId);
-    book.authors = book.authors.filter(a => a !== authorId);
-    
-    return this.updateBook(bookId, book);
+  
+  removeAuthorFromBook(bookId: number, authorId: number) {
+    const bookIndex = this.books.findIndex(book => book.bookId === bookId);
+    if (bookIndex === -1) {
+      throw new NotFoundException(`Book with ID ${bookId} not found`);
+    }
+    this.books[bookIndex].authors = this.books[bookIndex].authors.filter(a => a !== authorId);
+  
+    return this.books[bookIndex];
   }
 }
